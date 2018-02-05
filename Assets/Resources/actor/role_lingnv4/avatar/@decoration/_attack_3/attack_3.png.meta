@@ -1,0 +1,332 @@
+fileFormatVersion: 2
+guid: fa16abc31ac9eb7418b091be5483d537
+timeCreated: 1516600963
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: 10000
+    21300002: 10001
+    21300004: 10002
+    21300006: 10003
+    21300008: 10004
+    21300010: 10005
+    21300012: 10006
+    21300014: 10007
+    21300016: 10008
+    21300018: 10009
+    21300020: 30000
+    21300022: 30001
+    21300024: 30002
+    21300026: 30003
+    21300028: 30004
+    21300030: 30005
+    21300032: 30006
+    21300034: 30007
+    21300036: 30008
+    21300038: 30009
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 0
+  textureType: 5
+  buildTargetSettings:
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: 10
+    compressionQuality: 50
+    allowsAlphaSplitting: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: 45
+    compressionQuality: 50
+    allowsAlphaSplitting: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    textureFormat: 32
+    compressionQuality: 50
+    allowsAlphaSplitting: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 10000
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 75
+        width: 65
+        height: 78
+      alignment: 9
+      pivot: {x: 0.65384614, y: -0.7366667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10001
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 204
+        width: 59
+        height: 82
+      alignment: 9
+      pivot: {x: 0.7033898, y: -0.60317075}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10002
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 155
+        width: 60
+        height: 85
+      alignment: 9
+      pivot: {x: 0.7916667, y: -0.52305883}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10003
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 149
+        width: 61
+        height: 81
+      alignment: 9
+      pivot: {x: 0.89344263, y: -0.5982716}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10004
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 148
+        width: 63
+        height: 83
+      alignment: 9
+      pivot: {x: 0.96031743, y: -0.5718072}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10005
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 67
+        width: 65
+        height: 80
+      alignment: 9
+      pivot: {x: 0.97692305, y: -0.74325}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10006
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 87
+        height: 66
+      alignment: 9
+      pivot: {x: 0.70689654, y: -0.90090907}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10007
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 69
+        width: 82
+        height: 77
+      alignment: 9
+      pivot: {x: 0.6768293, y: -0.6812987}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10008
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 1
+        width: 74
+        height: 79
+      alignment: 9
+      pivot: {x: 0.6418919, y: -0.7020253}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 10009
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 1
+        width: 68
+        height: 75
+      alignment: 9
+      pivot: {x: 0.625, y: -0.81946665}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30000
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 158
+        width: 60
+        height: 78
+      alignment: 9
+      pivot: {x: 0.60833335, y: -0.85205126}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30001
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 78
+        width: 63
+        height: 74
+      alignment: 9
+      pivot: {x: 0.75396824, y: -0.93864864}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30002
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 1
+        width: 71
+        height: 72
+      alignment: 9
+      pivot: {x: 0.79577464, y: -1.0063889}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30003
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 238
+        width: 58
+        height: 68
+      alignment: 9
+      pivot: {x: 0.8189655, y: -1.1391176}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30004
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 1
+        width: 71
+        height: 64
+      alignment: 9
+      pivot: {x: 0.8239437, y: -1.2884375}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30005
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 1
+        width: 84
+        height: 69
+      alignment: 9
+      pivot: {x: 0.6964286, y: -1.2240579}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30006
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 72
+        width: 73
+        height: 60
+      alignment: 9
+      pivot: {x: 0.5, y: -1.1743333}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30007
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 134
+        width: 64
+        height: 68
+      alignment: 9
+      pivot: {x: 0.3984375, y: -0.87441176}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30008
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 82
+        width: 64
+        height: 74
+      alignment: 9
+      pivot: {x: 0.3984375, y: -0.76297295}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: 30009
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 233
+        width: 59
+        height: 75
+      alignment: 9
+      pivot: {x: 0.43220338, y: -0.7928}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
