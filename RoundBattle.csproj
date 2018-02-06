@@ -71,13 +71,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\script\battle\BattleSystem.cs" />
+    <Compile Include="Assets\script\battle\command\Command.cs" />
     <Compile Include="Assets\script\battle\Fighter.cs" />
     <Compile Include="Assets\script\battle\FighterActionEnum.cs" />
-    <Compile Include="Assets\script\battle\BattleSystem.cs" />
     <Compile Include="Assets\script\battle\IdGenerator.cs" />
     <Compile Include="Assets\script\battle\SeatManager.cs" />
     <Compile Include="Assets\script\battle\SpriteA2D.cs" />
+    <Compile Include="Assets\script\battle\command\CommandManager.cs" />
+    <Compile Include="Assets\script\battle\effect\ActorEffectManager.cs" />
+    <Compile Include="Assets\script\battle\effect\MapEffectManager.cs" />
     <Compile Include="Assets\script\battle\interface\IFighterAttirbute.cs" />
+    <Compile Include="Assets\script\battle\record\BattleRecord.cs" />
+    <Compile Include="Assets\script\battle\record\BattleRecordSystem.cs" />
     <Compile Include="Assets\script\battle\test\BattleSystemTest.cs" />
     <Compile Include="Assets\script\battle\test\SpriteA2DBinder.cs" />
     <Compile Include="Assets\script\utils\State.cs" />

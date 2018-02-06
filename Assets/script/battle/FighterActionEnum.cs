@@ -74,6 +74,11 @@ namespace RoundBattle {
             return ret;
         }
 
+        // 常规动作是否循环
+        public static bool IsLoopNormalAction(FighterActionEnum action) {
+            return action == FighterActionEnum.Idle || action == FighterActionEnum.Run;
+        }
+
         public static string GetActionName(FighterActionEnum action) {
             InitActorNames();
             if (m_ActionNames == null)

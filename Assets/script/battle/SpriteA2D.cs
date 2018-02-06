@@ -65,6 +65,22 @@ namespace RoundBattle {
         private int m_LastFrameTick = 0;
         /*----------------*/
         private SpriteRenderer m_Renderer = null;
+
+        private void ResetData() {
+            m_FrameType = SpriteFrameType.frame5Dir;
+            m_Frames = null;
+            m_CurrentDir = -1;
+            m_CurrentFrameIndex = -1;
+            m_FrameCount = 0;
+            m_IsFlip = false;
+            m_AniInfo = GeneratorDefaultAniInfo();
+            m_LoopCount = -1;
+            m_LoopDir = 0;
+            m_LoopIndex = -1;
+            m_AniTickCount = 0;
+            m_LastFrameTick = 0;
+        }
+
         private void CalcFrameCount() {
             if (!IsVaildData) {
                 m_FrameCount = 0;
@@ -83,7 +99,7 @@ namespace RoundBattle {
 
         public static AniInfo GeneratorDefaultAniInfo() {
             AniInfo ret = new AniInfo();
-            ret.frameTick = 80;
+            ret.frameTick = 100;
             return ret;
         }
 
@@ -235,6 +251,11 @@ namespace RoundBattle {
                         return -1;
                 }
             }
+        }
+
+        public void Destroy() {
+            ResetData();
+            GameObject.Destroy(gameObject);
         }
 
         // 转向

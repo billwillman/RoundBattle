@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * todo: 加载改为异步
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +13,7 @@ namespace RoundBattle {
     
 
     // 战斗角色
-    class Fighter: MonoBehaviour {
+    public class Fighter: MonoBehaviour {
         // 是否是玩家
         private bool m_IsPlayer = false;
         // 物件
@@ -73,9 +77,9 @@ namespace RoundBattle {
         protected virtual string GeneratorActorResPath() {
             string ret;
             if (m_IsPlayer)
-                ret = string.Format("resources/actor/{0}", m_Name);
+                ret = string.Format("actor/{0}", m_Name);
             else
-                ret = string.Format("resources/actor/@{1}", m_Name);
+                ret = string.Format("actor/@{0}", m_Name);
             return ret;
         }
 
@@ -125,14 +129,24 @@ namespace RoundBattle {
         }
 
         protected virtual Material LoadPartMaterial(FighterActionEnum action, FigherPart part) {
-            return Resources.Load<Material>("resources/material/actormat");
+            return Resources.Load<Material>("material/actormat");
         }
 
-        private void Init(string name, bool isPlayer, FighterActionEnum action) {
+        private void Init(string name, bool isPlayer, FighterActionEnum action, int dir = 0) {
             m_Name = name;
             m_IsPlayer = isPlayer;
             // 初始化路径
             m_ActorResPath = GeneratorActorResPath();
+            m_Dir = dir;
+            if (FighterStringEnumHelper.IsLoopNormalAction(action)) {
+                m_LoopDir = 0;
+                m_LoopCount = -1;
+                m_AniInfo.type = AniLoopType.aniLoop;
+            } else {
+                m_LoopDir = 0;
+                m_LoopCount = -1;
+                m_AniInfo.type = AniLoopType.aniOnce;
+            }
             // 优先创建身体
             CreatePart(action, FigherPart.Body);
         }
@@ -143,6 +157,7 @@ namespace RoundBattle {
             if (sprite == null) {
                 GameObject gameObj = new GameObject(FighterStringEnumHelper.GetPartName(FigherPart.Body),
                     typeof(SpriteA2D));
+                gameObj.transform.SetParent(this.transform, false);
                 sprite = gameObj.GetComponent<SpriteA2D>();
                 m_PartMap[(int)part] = sprite;
             }
@@ -158,17 +173,60 @@ namespace RoundBattle {
 
             // 后续考虑异步
             Sprite[] sps = LoadPartSprites(part, action);
-            // 后面考虑读取配置
             sprite.Init(sps, m_FrameType, m_AniInfo, m_LoopDir, m_LoopCount, m_Dir);
         }
 
+        public void InitServerData(int serverId) {
+            m_ServerId = serverId;
+
+        }
+
         // 创建NPC或者宠物
-        public static Fighter CreatePetOrNpc(int serverId, string name, FighterActionEnum defaultAction = FighterActionEnum.Idle) {
+        public static Fighter CreateFighter(int serverId, string name, bool isPlayer,
+            int dir = 0,
+            FighterActionEnum defaultAction = FighterActionEnum.Idle) {
             GameObject gameObj = new GameObject(name, typeof(Fighter));
+            gameObj.transform.localScale = new Vector3(1.33f, 1.33f);
             Fighter ret = gameObj.GetComponent<Fighter>();
-            ret.m_ServerId = serverId;
-            ret.Init(name, false, defaultAction);
+            ret.InitServerData(serverId);
+            ret.Init(name, isPlayer, defaultAction, dir);
             return ret;
+        }
+
+        private void ResetData() {
+            m_IsPlayer = false;
+            m_PartMap.Clear();
+            m_ActorResPath = string.Empty;
+            m_CurrentAction = FighterActionEnum.Idle;
+            m_Name = string.Empty;
+            m_FrameType = SpriteFrameType.frame5Dir;
+            m_AniInfo = SpriteA2D.GeneratorDefaultAniInfo();
+            m_Dir = 0;
+            m_LoopDir = 0;
+            m_LoopCount = -1;
+            m_Speed = 1f;
+            m_ServerId = -1;
+        }
+
+        private void DestroyAllPart() {
+            var iter = m_PartMap.GetEnumerator();
+            while (iter.MoveNext()) {
+                SpriteA2D sprite = iter.Current.Value;
+                if (sprite != null) {
+                    sprite.Destroy();
+                }
+            }
+            iter.Dispose();
+            m_PartMap.Clear();
+        }
+
+        // 删除
+        public void Destroy() {
+            DestroyAllPart();
+            ResetData();
+
+            // 释放GameObject
+            GameObject.Destroy(gameObject);
         }
 
         // 服务器ID
