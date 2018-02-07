@@ -5,6 +5,16 @@ using System.Text;
 
 namespace RoundBattle.Record {
 
+    public enum RecordOtherPartType {
+        weapon_1,
+        weapon_2,
+        weapon_3,
+        weapon_4,
+        weapon_5,
+        weapon_6,
+        avatar_decoration
+    }
+
     public struct RecordFighter {
         // 模型名
         public string model {
@@ -13,7 +23,7 @@ namespace RoundBattle.Record {
         }
 
         // 其他部件，除了body
-        public List<string> otherPart {
+        public List<RecordOtherPartType> otherPart {
             get;
             set;
         }

@@ -43,6 +43,16 @@ namespace RoundBattle.Record {
 
                 SeatInfo seatInfo = seatMgr.GetClientSeatInfo(info.serverId);
                 fighter.transform.localPosition = seatMgr.GetSeatStandWorldPosition(seatInfo);
+                // 创建部件
+                if (info.isPlayer) {
+                    // 玩家模式才会创建部件
+                    if (info.otherPart != null && info.otherPart.Count > 0) {
+                        for (int j = 0; j < info.otherPart.Count; ++j) {
+                            var otherPart = info.otherPart[j];
+                            fighter.AddOtherPart(otherPart);
+                        }
+                    }
+                }
             }
             return true;
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using RoundBattle.Record;
 
 namespace RoundBattle {
 
@@ -86,7 +87,7 @@ namespace RoundBattle {
         // 动作路径
         protected virtual string GeneratorActionPath(FighterActionEnum action,
             bool isAlpha = false,
-            FigherPart part = FigherPart.Body) {
+            FigherPart part = FigherPart.Body, string name = "") {
             string ret = string.Empty;
             string actionName = FighterStringEnumHelper.GetActionName(action);
             if (string.IsNullOrEmpty(actionName))
@@ -96,10 +97,17 @@ namespace RoundBattle {
                 string partName = FighterStringEnumHelper.GetPartName(part);
                 if (string.IsNullOrEmpty(partName))
                     return ret;
-                if (!isAlpha)
-                    ret = string.Format("{0}/{1}/@{2}/{2}", m_ActorResPath, partName, actionName);
-                else
-                    ret = string.Format("{0}/{1}/@{2}/_a/{2}_a", m_ActorResPath, partName, actionName);
+                if (!isAlpha) {
+                    if (string.IsNullOrEmpty(name))
+                        ret = string.Format("{0}/{1}/@{2}/{2}", m_ActorResPath, partName, actionName);
+                    else
+                        ret = string.Format("{0}/{1}/@{2}/_{3}/{3}", m_ActorResPath, partName, name, actionName);
+                } else {
+                    if (string.IsNullOrEmpty(name))
+                        ret = string.Format("{0}/{1}/@{2}/_a/{2}_a", m_ActorResPath, partName, actionName);
+                    else
+                        ret = string.Format("{0}/{1}/@{2}/_{3}/a/{3}_a", m_ActorResPath, partName, name, actionName);
+                }
             } else {
                 if (part != FigherPart.Body)
                     return ret;
@@ -113,22 +121,22 @@ namespace RoundBattle {
         }
 
         // 暂时用同步，后续用异步
-        protected virtual Sprite[] LoadPartSprites(FigherPart part, FighterActionEnum action) {
-            string fileName = GeneratorActionPath(action, false, part);
+        protected virtual Sprite[] LoadPartSprites(FigherPart part, FighterActionEnum action, string name = "") {
+            string fileName = GeneratorActionPath(action, false, part, name);
             if (string.IsNullOrEmpty(fileName))
                 return null;
             return Resources.LoadAll<Sprite>(fileName);
         }
 
         // 暂时用同步，后续用异步
-        protected virtual Texture LoadPartAlphaTexture(FigherPart part, FighterActionEnum action) {
-            string fileName = GeneratorActionPath(action, true, part);
+        protected virtual Texture LoadPartAlphaTexture(FigherPart part, FighterActionEnum action, string name = "") {
+            string fileName = GeneratorActionPath(action, true, part, name);
             if (string.IsNullOrEmpty(fileName))
                 return null;
             return Resources.Load<Texture>(fileName);
         }
 
-        protected virtual Material LoadPartMaterial(FighterActionEnum action, FigherPart part) {
+        protected virtual Material LoadPartMaterial(FighterActionEnum action, FigherPart part, string name) {
             return Resources.Load<Material>("material/actormat");
         }
 
@@ -138,6 +146,7 @@ namespace RoundBattle {
             // 初始化路径
             m_ActorResPath = GeneratorActorResPath();
             m_Dir = dir;
+            m_CurrentAction = action;
             if (FighterStringEnumHelper.IsLoopNormalAction(action)) {
                 m_LoopDir = 0;
                 m_LoopCount = -1;
@@ -151,12 +160,48 @@ namespace RoundBattle {
             CreatePart(action, FigherPart.Body);
         }
 
-        private void CreatePart(FighterActionEnum action, FigherPart part) {
+        public bool AddOtherPart(RecordOtherPartType otherPart) {
+            
+            FigherPart part;
+            float z = 0f;
+            switch (otherPart) {
+                case RecordOtherPartType.avatar_decoration:
+                    part = FigherPart.Avatar;
+                    z = -0.001f;
+                    break;
+                case RecordOtherPartType.weapon_1:
+                case RecordOtherPartType.weapon_2:
+                case RecordOtherPartType.weapon_3:
+                case RecordOtherPartType.weapon_4:
+                case RecordOtherPartType.weapon_5:
+                case RecordOtherPartType.weapon_6:
+                    part = FigherPart.Weapon;
+                    z = -0.002f;
+                    break;
+                default:
+                    return false;
+            }
+            string name = FighterStringEnumHelper.GetOtherPartName(otherPart);
+
+            SpriteA2D sprite = CreatePart(m_CurrentAction, part, name);
+            if (sprite != null) {
+                var trans = sprite.transform;
+                Vector3 vec = trans.localPosition;
+                vec.z = z;
+                trans.localPosition = vec;
+            }
+
+            return true;
+        }
+
+        private SpriteA2D CreatePart(FighterActionEnum action, FigherPart part, string name = "") {
 
             SpriteA2D sprite = GetPartSpriteA2D(part);
             if (sprite == null) {
-                GameObject gameObj = new GameObject(FighterStringEnumHelper.GetPartName(FigherPart.Body),
-                    typeof(SpriteA2D));
+                string gameObjName = name;
+                if (string.IsNullOrEmpty(gameObjName))
+                    gameObjName = FighterStringEnumHelper.GetPartName(part);
+                GameObject gameObj = new GameObject(gameObjName, typeof(SpriteA2D));
                 gameObj.transform.SetParent(this.transform, false);
                 sprite = gameObj.GetComponent<SpriteA2D>();
                 m_PartMap[(int)part] = sprite;
@@ -165,15 +210,16 @@ namespace RoundBattle {
             SpriteRenderer renderer = sprite.Renderer;
             if (renderer != null) {
                 // 暂时先这样
-                renderer.sharedMaterial = LoadPartMaterial(action, part);
+                renderer.sharedMaterial = LoadPartMaterial(action, part, name);
 
-                Texture alphaTex = LoadPartAlphaTexture(part, action);
+                Texture alphaTex = LoadPartAlphaTexture(part, action, name);
                 renderer.material.SetTexture("_UVTex", alphaTex);
             }
 
             // 后续考虑异步
-            Sprite[] sps = LoadPartSprites(part, action);
+            Sprite[] sps = LoadPartSprites(part, action, name);
             sprite.Init(sps, m_FrameType, m_AniInfo, m_LoopDir, m_LoopCount, m_Dir);
+            return sprite;
         }
 
         public void InitServerData(int serverId) {
@@ -186,7 +232,7 @@ namespace RoundBattle {
             int dir = 0,
             FighterActionEnum defaultAction = FighterActionEnum.Idle) {
             GameObject gameObj = new GameObject(name, typeof(Fighter));
-            gameObj.transform.localScale = new Vector3(1.33f, 1.33f);
+            gameObj.transform.localScale = new Vector3(1.33f, 1.33f, 1f);
             Fighter ret = gameObj.GetComponent<Fighter>();
             ret.InitServerData(serverId);
             ret.Init(name, isPlayer, defaultAction, dir);
@@ -240,7 +286,7 @@ namespace RoundBattle {
             var iter = m_PartMap.GetEnumerator();
             while (iter.MoveNext()) {
                 SpriteA2D sprite = iter.Current.Value;
-                if (sprite != null) {
+                if (sprite != null && sprite.enabled) {
                     sprite.OnSpriteAnimateUpdate(m_Speed);
                     sprite.AttachSpriteRenderer();
                 }

@@ -25,6 +25,10 @@ namespace RoundBattle.Test {
             fighter.isMySelf = true;
             fighter.model = "role_lingnv4";
             fighter.serverId = 10;
+            fighter.otherPart = new List<RecordOtherPartType>();
+            // 头发
+            fighter.otherPart.Add(RecordOtherPartType.avatar_decoration);
+            fighter.otherPart.Add(RecordOtherPartType.weapon_1);
             fighter.isPlayer = true;
             fighters.Add(fighter);
 
@@ -32,6 +36,10 @@ namespace RoundBattle.Test {
             fighter.isMySelf = false;
             fighter.model = "role_lingnv4";
             fighter.serverId = 11;
+            fighter.otherPart = new List<RecordOtherPartType>();
+            // 头发
+            fighter.otherPart.Add(RecordOtherPartType.avatar_decoration);
+            fighter.otherPart.Add(RecordOtherPartType.weapon_2);
             fighter.isPlayer = true;
             fighters.Add(fighter);
 
@@ -39,6 +47,10 @@ namespace RoundBattle.Test {
             fighter.isMySelf = false;
             fighter.model = "role_lingnv4";
             fighter.serverId = 12;
+            fighter.otherPart = new List<RecordOtherPartType>();
+            // 头发
+            fighter.otherPart.Add(RecordOtherPartType.avatar_decoration);
+            fighter.otherPart.Add(RecordOtherPartType.weapon_3);
             fighter.isPlayer = true;
             fighters.Add(fighter);
 
@@ -46,6 +58,10 @@ namespace RoundBattle.Test {
             fighter.isMySelf = false;
             fighter.model = "role_lingnv4";
             fighter.serverId = 13;
+            fighter.otherPart = new List<RecordOtherPartType>();
+            // 头发
+            fighter.otherPart.Add(RecordOtherPartType.avatar_decoration);
+            fighter.otherPart.Add(RecordOtherPartType.weapon_4);
             fighter.isPlayer = true;
             fighters.Add(fighter);
 
@@ -53,6 +69,10 @@ namespace RoundBattle.Test {
             fighter.isMySelf = false;
             fighter.model = "role_lingnv4";
             fighter.serverId = 14;
+            fighter.otherPart = new List<RecordOtherPartType>();
+            // 头发
+            fighter.otherPart.Add(RecordOtherPartType.avatar_decoration);
+            fighter.otherPart.Add(RecordOtherPartType.weapon_5);
             fighter.isPlayer = true;
             fighters.Add(fighter);
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RoundBattle.Record;
 
 namespace RoundBattle {
     // 角色动画枚举类型对应字符串
@@ -32,14 +33,28 @@ namespace RoundBattle {
         Body = 0,
         // 武器
         Weapon,
-        // 头发
-        Decoration,
+        // 部件
+        Avatar,
     }
 
     public static class FighterStringEnumHelper {
         // 不用枚举声明减少GC
         private static Dictionary<int, string> m_ActionNames = null;
         private static Dictionary<int, string> m_PartNames = null;
+        private static Dictionary<int, string> m_RecordOtherPartNames = null;
+
+        private static void InitRecordOtherPartNames() {
+            if (m_RecordOtherPartNames != null)
+                return;
+            m_RecordOtherPartNames = new Dictionary<int, string>();
+            m_RecordOtherPartNames.Add((int)RecordOtherPartType.avatar_decoration, "decoration");
+            m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_1, "1");
+            m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_2, "2");
+            m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_3, "3");
+            m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_4, "4");
+            m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_5, "5");
+            m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_6, "6");
+        }
         
         private static void InitActorNames() {
             if (m_ActionNames != null)
@@ -61,7 +76,7 @@ namespace RoundBattle {
             m_PartNames = new Dictionary<int, string>();
             m_PartNames.Add((int)FigherPart.Body, "body");
             m_PartNames.Add((int)FigherPart.Weapon, "weapon");
-            m_PartNames.Add((int)FigherPart.Decoration, "decoration");
+            m_PartNames.Add((int)FigherPart.Avatar, "avatar");
         }
 
         public static string GetPartName(FigherPart part) {
@@ -71,6 +86,16 @@ namespace RoundBattle {
             string ret;
             if (!m_PartNames.TryGetValue((int)part, out ret))
                 ret = string.Empty;
+            return ret;
+        }
+
+        public static string GetOtherPartName(RecordOtherPartType part) {
+            InitRecordOtherPartNames();
+            if (m_RecordOtherPartNames == null)
+                return string.Empty;
+            string ret;
+            if (!m_RecordOtherPartNames.TryGetValue((int)part, out ret))
+                return string.Empty;
             return ret;
         }
 

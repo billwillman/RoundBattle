@@ -66,6 +66,10 @@ namespace RoundBattle {
         /*----------------*/
         private SpriteRenderer m_Renderer = null;
 
+        private void OnEnable() {
+            
+        }
+
         private void ResetData() {
             m_FrameType = SpriteFrameType.frame5Dir;
             m_Frames = null;
@@ -99,7 +103,7 @@ namespace RoundBattle {
 
         public static AniInfo GeneratorDefaultAniInfo() {
             AniInfo ret = new AniInfo();
-            ret.frameTick = 100;
+            ret.frameTick = 200;
             return ret;
         }
 
