@@ -9,6 +9,7 @@ namespace RoundBattle {
     // 角色动画枚举类型对应字符串
 
     public enum FighterActionEnum {
+        None,
         // 攻击
         Attack,
         // 从地上爬出来

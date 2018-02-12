@@ -73,6 +73,10 @@
   <ItemGroup>
     <Compile Include="Assets\script\battle\BattleSystem.cs" />
     <Compile Include="Assets\script\battle\command\Command.cs" />
+    <Compile Include="Assets\script\battle\command\FighterStateBinder.cs" />
+    <Compile Include="Assets\script\battle\command\FighterStates.cs" />
+    <Compile Include="Assets\script\battle\command\Fighter_PhysicalAttackMoveState.cs" />
+    <Compile Include="Assets\script\battle\command\IStateData.cs" />
     <Compile Include="Assets\script\battle\Fighter.cs" />
     <Compile Include="Assets\script\battle\FighterActionEnum.cs" />
     <Compile Include="Assets\script\battle\IdGenerator.cs" />

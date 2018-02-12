@@ -40,6 +40,15 @@ namespace RoundBattle {
             }
         }
 
+        public int CurrentFrameIndex {
+            get {
+                SpriteA2D body = GetPartSpriteA2D(FigherPart.Body);
+                if (body == null)
+                    return -1;
+                return body.CurrentFrameIndex;
+            }
+        }
+
         public SpriteFrameType FrameType {
             get {
                 return m_FrameType;
@@ -140,14 +149,8 @@ namespace RoundBattle {
             return Resources.Load<Material>("material/actormat");
         }
 
-        private void Init(string name, bool isPlayer, FighterActionEnum action, int dir = 0) {
-            m_Name = name;
-            m_IsPlayer = isPlayer;
-            // 初始化路径
-            m_ActorResPath = GeneratorActorResPath();
-            m_Dir = dir;
-            m_CurrentAction = action;
-            if (FighterStringEnumHelper.IsLoopNormalAction(action)) {
+        private void InitLoopData() {
+            if (FighterStringEnumHelper.IsLoopNormalAction(m_CurrentAction)) {
                 m_LoopDir = 0;
                 m_LoopCount = -1;
                 m_AniInfo.type = AniLoopType.aniLoop;
@@ -156,6 +159,16 @@ namespace RoundBattle {
                 m_LoopCount = -1;
                 m_AniInfo.type = AniLoopType.aniOnce;
             }
+        }
+
+        private void Init(string name, bool isPlayer, FighterActionEnum action, int dir = 0) {
+            m_Name = name;
+            m_IsPlayer = isPlayer;
+            // 初始化路径
+            m_ActorResPath = GeneratorActorResPath();
+            m_Dir = dir;
+            m_CurrentAction = action;
+            InitLoopData();
             // 优先创建身体
             CreatePart(action, FigherPart.Body);
         }
@@ -194,6 +207,23 @@ namespace RoundBattle {
             return true;
         }
 
+        protected void AttachSpriteA2D(SpriteA2D sprite, FighterActionEnum action, FigherPart part, string name) {
+            if (sprite == null)
+                return;
+            SpriteRenderer renderer = sprite.Renderer;
+            if (renderer != null) {
+                // 暂时先这样
+                renderer.sharedMaterial = LoadPartMaterial(action, part, name);
+
+                Texture alphaTex = LoadPartAlphaTexture(part, action, name);
+                renderer.material.SetTexture("_UVTex", alphaTex);
+            }
+
+            // 后续考虑异步
+            Sprite[] sps = LoadPartSprites(part, action, name);
+            sprite.Init(sps, m_FrameType, m_AniInfo, m_LoopDir, m_LoopCount, m_Dir);
+        }
+
         private SpriteA2D CreatePart(FighterActionEnum action, FigherPart part, string name = "") {
 
             SpriteA2D sprite = GetPartSpriteA2D(part);
@@ -207,18 +237,7 @@ namespace RoundBattle {
                 m_PartMap[(int)part] = sprite;
             }
 
-            SpriteRenderer renderer = sprite.Renderer;
-            if (renderer != null) {
-                // 暂时先这样
-                renderer.sharedMaterial = LoadPartMaterial(action, part, name);
-
-                Texture alphaTex = LoadPartAlphaTexture(part, action, name);
-                renderer.material.SetTexture("_UVTex", alphaTex);
-            }
-
-            // 后续考虑异步
-            Sprite[] sps = LoadPartSprites(part, action, name);
-            sprite.Init(sps, m_FrameType, m_AniInfo, m_LoopDir, m_LoopCount, m_Dir);
+            AttachSpriteA2D(sprite, action, part, name);
             return sprite;
         }
 
@@ -280,6 +299,21 @@ namespace RoundBattle {
             get {
                 return m_ServerId;
             }
+        }
+
+        public void ChangeAction(FighterActionEnum action, int dir) {
+            if (m_CurrentAction == action && m_Dir == dir)
+                return;
+            m_CurrentAction = action;
+            m_Dir = dir;
+            InitLoopData();
+            var iter = m_PartMap.GetEnumerator();
+            while (iter.MoveNext()) {
+                SpriteA2D sprite = iter.Current.Value;
+                FigherPart part = (FigherPart)iter.Current.Key;
+                AttachSpriteA2D(sprite, m_CurrentAction, part, "");
+            }
+            iter.Dispose();
         }
 
         private void Update() {

@@ -42,6 +42,7 @@ namespace RoundBattle.Record {
                 }
 
                 SeatInfo seatInfo = seatMgr.GetClientSeatInfo(info.serverId);
+                // 这部分是角色的位置
                 fighter.transform.localPosition = seatMgr.GetSeatStandWorldPosition(seatInfo);
                 // 创建部件
                 if (info.isPlayer) {
