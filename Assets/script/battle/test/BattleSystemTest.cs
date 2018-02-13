@@ -185,6 +185,32 @@ namespace RoundBattle.Test {
 
             m_Sys.LoadBattleRecord(record);
         }
+
+        private FighterActionEnum m_TestAction = FighterActionEnum.None;
+
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.A)) {
+
+                if ((int)m_TestAction + 1 >= (int)FighterActionEnum.Max) {
+                    m_TestAction = FighterActionEnum.None + 1;
+                } else
+                    m_TestAction = m_TestAction + 1;
+
+                SeatInfo seat = new SeatInfo();
+
+                seat.seat = SeatType.right;
+                for (int i = 0; i < SeatManager._cSeatCount; ++i) {
+                    seat.pos = i;
+                    BattleSystem.GetInstance().SeatMgr.ChangeAction(seat, m_TestAction, true);
+                }
+
+                seat.seat = SeatType.left;
+                for (int i = 0; i < SeatManager._cSeatCount; ++i) {
+                    seat.pos = i;
+                    BattleSystem.GetInstance().SeatMgr.ChangeAction(seat, m_TestAction, true);
+                }
+            }
+        }
     }
 
 }

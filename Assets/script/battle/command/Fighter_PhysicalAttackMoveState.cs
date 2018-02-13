@@ -40,14 +40,20 @@ namespace RoundBattle.Command {
             var seatMgr = BattleSystem.GetInstance().SeatMgr;
             Vector3 targetVec = seatMgr.GetSeatStandWorldPosition(targetSeat);
             Vector3 destOrgDir = (targetVec - vec).normalized;
-            Vector3 dir = destOrgDir * target.TickDetla;
+            Vector3 dir = destOrgDir * target.TickDetla * moveSpeed;
             vec += dir;
             bool isPosEnd = Fighter.IsPosEnd(destOrgDir, targetVec, vec);
             if (isPosEnd) {
                 trans.position = targetVec;
-                // 更换到默认状态
+                // 更换状态
+                DoNextState(target);
             } else
                 trans.position = vec;
+        }
+
+        private void DoNextState(Fighter target) {
+            // 物理攻击等待状态
+            target.StateMgr.ChangeState(FighterStates.Fighter_PhysicalAttackWait);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace RoundBattle.Command {
         Fighter_DamageStruct,
         // 击飞状态
         Fighter_DamageFly,
-        // 等待状态，常用于延迟
-        Fighter_Wait,
+        // 物理攻击等待状态
+        Fighter_PhysicalAttackWait,
     }
 }

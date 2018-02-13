@@ -38,7 +38,7 @@ namespace RoundBattle {
     }
 
     // 负责角色管理
-    public class SeatManager: MonoBehaviour {
+    public class SeatManager : MonoBehaviour {
 
         private Fighter[] m_LeftSeats = new Fighter[_cSeatCount];
         private Fighter[] m_RightSeats = new Fighter[_cSeatCount];
@@ -151,7 +151,7 @@ namespace RoundBattle {
                 return _cInvaildPos;
             if (!MySelfServerInfo.IsVaild)
                 return _cInvaildPos;
-            int srvId = clientInfo.seat == MySelfServerInfo.seat ? _cSeatCount + clientInfo.pos: clientInfo.pos;
+            int srvId = clientInfo.seat == MySelfServerInfo.seat ? _cSeatCount + clientInfo.pos : clientInfo.pos;
             Vector3 ret;
             if (!m_dictPosition.TryGetValue(srvId, out ret))
                 return _cInvaildPos;
@@ -212,6 +212,26 @@ namespace RoundBattle {
                 Fighter fighter = m_RightSeats[i];
                 DestroyFighter(fighter);
             }
+        }
+
+        public bool ChangeAction(SeatInfo clientSeatInfo, FighterActionEnum action, int dir, bool isReset = false) {
+            if (!clientSeatInfo.IsVaild)
+                return false;
+            Fighter fighter = GetFighter(clientSeatInfo);
+            if (fighter == null)
+                return false;
+            fighter.ChangeAction(action, dir, isReset);
+            return true;
+        }
+
+        public bool ChangeAction(SeatInfo clientSeatInfo, FighterActionEnum action, bool isReset = false) {
+            if (!clientSeatInfo.IsVaild)
+                return false;
+            Fighter fighter = GetFighter(clientSeatInfo);
+            if (fighter == null)
+                return false;
+            fighter.ChangeAction(action, isReset);
+            return true;
         }
 
         private void DestroyFighter(Fighter fighter) {

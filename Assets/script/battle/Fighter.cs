@@ -18,6 +18,7 @@ namespace RoundBattle {
     public class Fighter: MonoBehaviour {
         // 是否是玩家
         private bool m_IsPlayer = false;
+        private FighterStateMgr m_StateMgr = null;
         // 物件
         private Dictionary<int, SpriteA2D> m_PartMap = new Dictionary<int, SpriteA2D>();
         private string m_ActorResPath = string.Empty;
@@ -35,6 +36,7 @@ namespace RoundBattle {
 
         private void Awake() {
             m_AniInfo = SpriteA2D.GeneratorDefaultAniInfo();
+            m_StateMgr = new FighterStateMgr(this);
         }
 
         public string Name {
@@ -49,6 +51,13 @@ namespace RoundBattle {
                 if (body == null)
                     return -1;
                 return body.CurrentFrameIndex;
+            }
+        }
+
+        // 状态机
+        public FighterStateMgr StateMgr {
+            get {
+                return m_StateMgr;
             }
         }
 
@@ -110,7 +119,18 @@ namespace RoundBattle {
             bool isAlpha = false,
             FigherPart part = FigherPart.Body, string name = "") {
             string ret = string.Empty;
-            string actionName = FighterStringEnumHelper.GetActionName(action);
+            string actionName;
+            // 查找武器
+            if (part != FigherPart.Weapon) {
+                SpriteA2D weaponSprite = GetPartSpriteA2D(FigherPart.Weapon);
+                if (weaponSprite != null && weaponSprite.Tag != 0) {
+                    RecordOtherPartType otherPart = (RecordOtherPartType)weaponSprite.Tag;
+                    actionName = FighterStringEnumHelper.GetRoleBodyActionNames(m_Name, action, otherPart);
+                } else
+                    actionName = FighterStringEnumHelper.GetActionName(action);
+            } else
+                actionName = FighterStringEnumHelper.GetActionName(action);
+
             if (string.IsNullOrEmpty(actionName))
                 return ret;
 
@@ -314,8 +334,8 @@ namespace RoundBattle {
             }
         }
 
-        public void ChangeAction(FighterActionEnum action, int dir) {
-            if (m_CurrentAction == action && m_Dir == dir)
+        public void ChangeAction(FighterActionEnum action, int dir, bool isReset = false) {
+            if (!isReset && m_CurrentAction == action && m_Dir == dir)
                 return;
             m_CurrentAction = action;
             m_Dir = dir;
@@ -376,8 +396,8 @@ namespace RoundBattle {
             return m_Dir;
         }
 
-        public void ChangeAction(FighterActionEnum action) {
-            ChangeAction(action, m_Dir);
+        public void ChangeAction(FighterActionEnum action, bool isReset = false) {
+            ChangeAction(action, m_Dir, isReset);
         }
 
         public float TickDetla {

@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Utils;
 using RoundBattle.Record;
 
 namespace RoundBattle {
     // 角色动画枚举类型对应字符串
 
     public enum FighterActionEnum {
-        None,
+        None = 0,
         // 攻击
         Attack,
         // 从地上爬出来
@@ -25,7 +26,9 @@ namespace RoundBattle {
         // 跑步
         Run,
         // 释放魔法
-        SkillMagic
+        SkillMagic,
+
+        Max
     }
 
     // 部件枚举
@@ -38,12 +41,66 @@ namespace RoundBattle {
         Avatar,
     }
 
+      struct ActionNameDirKey: IEquatable<ActionNameDirKey> {
+
+        public RecordOtherPartType weapon {
+            get;
+            set;
+        }
+
+        public FighterActionEnum action {
+            get;
+            set;
+        }
+
+        public string modelName {
+            get;
+            set;
+        }
+
+        public static bool operator !=(ActionNameDirKey a1, ActionNameDirKey a2) {
+            return (!(a1 == a2));
+        }
+        public static bool operator ==(ActionNameDirKey a1, ActionNameDirKey a2) {
+            return a1.weapon == a2.weapon && a1.action == a2.action && string.Compare(a1.modelName, a2.modelName) == 0;
+        }
+        public override int GetHashCode() {
+            int ret = FilePathMgr.InitHashValue();
+            FilePathMgr.HashCode(ref ret, weapon);
+            FilePathMgr.HashCode(ref ret, (int)action);
+            FilePathMgr.HashCode(ref ret, modelName);
+            return ret;
+        }
+
+        public bool Equals(ActionNameDirKey other) {
+            return this == other;
+        }
+
+        public override bool Equals(object obj) {
+            if (obj == null)
+                return false;
+
+            if (GetType() != obj.GetType())
+                return false;
+
+            if (obj is ActionNameDirKey) {
+                ActionNameDirKey other = (ActionNameDirKey)obj;
+                return Equals(other);
+            } else
+                return false;
+
+        }
+    }
+
+    class ActionNameDirKeyComparser : StructComparser<ActionNameDirKey> { }
+
     public static class FighterStringEnumHelper {
         // 不用枚举声明减少GC
         private static Dictionary<int, string> m_ActionNames = null;
         private static Dictionary<int, string> m_PartNames = null;
         private static Dictionary<int, string> m_RecordOtherPartNames = null;
-
+        // 不需要包含默认的转换
+        private static Dictionary<ActionNameDirKey, string> m_RoleBodyActionNames = new Dictionary<ActionNameDirKey, string>(ActionNameDirKeyComparser.Default);
         private static void InitRecordOtherPartNames() {
             if (m_RecordOtherPartNames != null)
                 return;
@@ -55,6 +112,101 @@ namespace RoundBattle {
             m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_4, "4");
             m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_5, "5");
             m_RecordOtherPartNames.Add((int)RecordOtherPartType.weapon_6, "6");
+        }
+
+        // 暂时先这样，后续更改为按需读取配置表
+        private static void InitRoleBoydActionNames() {
+            if (m_RoleBodyActionNames.Count > 0)
+                return;
+            ActionNameDirKey key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Attack;
+            key.weapon = RecordOtherPartType.weapon_1;
+            m_RoleBodyActionNames.Add(key, "attack_1");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Attack;
+            key.weapon = RecordOtherPartType.weapon_2;
+            m_RoleBodyActionNames.Add(key, "attack_2");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Attack;
+            key.weapon = RecordOtherPartType.weapon_3;
+            m_RoleBodyActionNames.Add(key, "attack_3");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Attack;
+            key.weapon = RecordOtherPartType.weapon_4;
+            m_RoleBodyActionNames.Add(key, "attack_4");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Attack;
+            key.weapon = RecordOtherPartType.weapon_5;
+            m_RoleBodyActionNames.Add(key, "attack_5");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Attack;
+            key.weapon = RecordOtherPartType.weapon_6;
+            m_RoleBodyActionNames.Add(key, "attack_6");
+
+            // 跑步
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Run;
+            key.weapon = RecordOtherPartType.weapon_1;
+            m_RoleBodyActionNames.Add(key, "run_1_2_3_4_5");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Run;
+            key.weapon = RecordOtherPartType.weapon_2;
+            m_RoleBodyActionNames.Add(key, "run_1_2_3_4_5");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Run;
+            key.weapon = RecordOtherPartType.weapon_3;
+            m_RoleBodyActionNames.Add(key, "run_1_2_3_4_5");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Run;
+            key.weapon = RecordOtherPartType.weapon_4;
+            m_RoleBodyActionNames.Add(key, "run_1_2_3_4_5");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Run;
+            key.weapon = RecordOtherPartType.weapon_5;
+            m_RoleBodyActionNames.Add(key, "run_1_2_3_4_5");
+
+            key = new ActionNameDirKey();
+            key.modelName = "role_lingnv4";
+            key.action = FighterActionEnum.Run;
+            key.weapon = RecordOtherPartType.weapon_6;
+            m_RoleBodyActionNames.Add(key, "run_6");
+        }
+
+        public static string GetRoleBodyActionNames(string modelName, FighterActionEnum action, RecordOtherPartType weapon) {
+
+            // 暂时先这样，后续按需读取
+            InitRoleBoydActionNames();
+
+            if (string.IsNullOrEmpty(modelName))
+                return GetActionName(action);
+            string ret;
+            ActionNameDirKey key = new ActionNameDirKey();
+            key.modelName = modelName;
+            key.action = action;
+            key.weapon = weapon;
+            if (m_RoleBodyActionNames.TryGetValue(key, out ret))
+                return ret;
+            return GetActionName(action);
         }
         
         private static void InitActorNames() {
