@@ -6,7 +6,7 @@ using System.Text;
 namespace RoundBattle.Record {
 
     public enum RecordOtherPartType {
-        weapon_1,
+        weapon_1 = 1,
         weapon_2,
         weapon_3,
         weapon_4,

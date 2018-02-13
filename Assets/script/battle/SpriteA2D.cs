@@ -83,6 +83,7 @@ namespace RoundBattle {
             m_LoopIndex = -1;
             m_AniTickCount = 0;
             m_LastFrameTick = 0;
+            Tag = 0;
         }
 
         private void CalcFrameCount() {
@@ -91,6 +92,12 @@ namespace RoundBattle {
                 return;
             }
             m_FrameCount = m_Frames.Length / (int)m_FrameType;
+        }
+
+        // 用户数据
+        public int Tag {
+            get;
+            set;
         }
 
         public SpriteRenderer Renderer {
@@ -356,7 +363,7 @@ namespace RoundBattle {
             }
         }
 
-        private static readonly int _cSpriteAnimateDeltaTick = (int)(1f/30f * 1000f);
+        internal static readonly int _cSpriteAnimateDeltaTick = (int)(1f/30f * 1000f);
         // 采用默认帧频率调用
         public void OnSpriteAnimateUpdate(float speed = 1.0f) {
             int tickCount = (int)((float)m_AniTickCount + _cSpriteAnimateDeltaTick * speed);

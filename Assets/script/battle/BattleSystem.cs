@@ -11,6 +11,7 @@ namespace RoundBattle {
         private BattleRecordSystem m_RecordSystem = null;
         private SeatManager m_SeatMgr = null;
         private CommandManager m_CommandMgr = new CommandManager();
+        private static BattleSystem m_Instance = null;
 
         public static Transform FightersRoot {
             get;
@@ -18,9 +19,28 @@ namespace RoundBattle {
         }
 
         private void Awake() {
+            var parentTrans = this.transform;
             var gameObj = new GameObject("Fighters");
             FightersRoot = gameObj.transform;
-            FightersRoot.SetParent(this.transform, false);
+            FightersRoot.SetParent(parentTrans, false);
+
+            // 地图特效节点
+            gameObj = new GameObject("MapEffect", typeof(MapEffectManager));
+            gameObj.transform.SetParent(parentTrans, false);
+        }
+
+        public static BattleSystem GetInstance() {
+            if (m_Instance == null) {
+                GameObject obj = new GameObject("BattleSystem", typeof(BattleSystem));
+                m_Instance = obj.GetComponent<BattleSystem>();
+            }
+            return m_Instance;
+        }
+
+        public static BattleSystem Instance {
+            get {
+                return GetInstance();
+            }
         }
 
         // 读取战报, 从头播放到尾部
@@ -59,6 +79,7 @@ namespace RoundBattle {
 
         private void OnDestroy() {
             FightersRoot = null;
+            m_Instance = null;
         }
     }
 

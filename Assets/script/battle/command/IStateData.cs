@@ -5,8 +5,34 @@ using System.Text;
 
 namespace RoundBattle.Command {
 
-    // 物理移动数据
-    internal struct Fighter_PhsyicalAttackMoveData {
+    internal class Fighter_ActionData {
+        private int m_LastKeyFrame = -1;
+        private FighterActionEnum m_LastAction = FighterActionEnum.None;
+
+        internal int LastKeyFrame {
+            get {
+                return m_LastKeyFrame;
+            }
+            set {
+                m_LastKeyFrame = value;
+            }
+        }
+
+        internal FighterActionEnum LastAction {
+            get {
+                return m_LastAction;
+            }
+            set {
+                m_LastAction = value;
+            }
+        }
+    }
+
+    /*---------------------------------------战斗中才有的数据--------------------------------------------------*/
+
+
+    // 物理攻击移动数据
+    internal class Fighter_PhsyicalAttackMoveData {
         // 原始位置
         public SeatInfo Origion {
             get;
@@ -18,15 +44,30 @@ namespace RoundBattle.Command {
             private set;
         }
 
-        public void SetInfo(SeatInfo origion, SeatInfo target) {
+        public float MoveSpeed {
+            get;
+            private set;
+        }
+
+        public Fighter_PhsyicalAttackMoveData(SeatInfo origion, SeatInfo target, float moveSpeed) {
             this.Origion = origion;
             this.Target = target;
+            this.MoveSpeed = moveSpeed;
         }
     }
 
+    /*---------------------------------------------------------------------------------------------*/
+
     // 数据层
     internal interface IFighterStateData {
+
+        // 战斗中才有
         Fighter_PhsyicalAttackMoveData PhysicalAttackMoveData {
+            get;
+            set;
+        }
+
+        Fighter_ActionData ActionData {
             get;
             set;
         }

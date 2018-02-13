@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using RoundBattle.Record;
+using RoundBattle.Command;
 
 namespace RoundBattle {
 
@@ -29,6 +30,8 @@ namespace RoundBattle {
         private int m_LoopCount = -1;
         private float m_Speed = 1f;
         private int m_ServerId = -1;
+        // 非战斗中无此数据
+        private IFighterStateData m_FighterStateData;
 
         private void Awake() {
             m_AniInfo = SpriteA2D.GeneratorDefaultAniInfo();
@@ -46,6 +49,15 @@ namespace RoundBattle {
                 if (body == null)
                     return -1;
                 return body.CurrentFrameIndex;
+            }
+        }
+
+        internal IFighterStateData FighterStateData {
+            get {
+                return m_FighterStateData;
+            }
+            set {
+                m_FighterStateData = value;
             }
         }
 
@@ -197,6 +209,7 @@ namespace RoundBattle {
             string name = FighterStringEnumHelper.GetOtherPartName(otherPart);
 
             SpriteA2D sprite = CreatePart(m_CurrentAction, part, name);
+            sprite.Tag = (int)otherPart;
             if (sprite != null) {
                 var trans = sprite.transform;
                 Vector3 vec = trans.localPosition;
@@ -311,9 +324,66 @@ namespace RoundBattle {
             while (iter.MoveNext()) {
                 SpriteA2D sprite = iter.Current.Value;
                 FigherPart part = (FigherPart)iter.Current.Key;
-                AttachSpriteA2D(sprite, m_CurrentAction, part, "");
+                string name = string.Empty;
+                if (sprite.Tag != 0) {
+                    RecordOtherPartType otherPartType = (RecordOtherPartType)sprite.Tag;
+                    name = FighterStringEnumHelper.GetOtherPartName(otherPartType);
+                }
+                AttachSpriteA2D(sprite, m_CurrentAction, part, name);
             }
             iter.Dispose();
+        }
+
+        public static bool IsPosEnd(Vector3 destOrgDir, Vector3 dest, Vector3 current) {
+            Vector3 curretDir = dest - current;
+            float v = destOrgDir.x * current.x + destOrgDir.y * current.y;
+            if (v <= float.Epsilon)
+                return true;
+            return false;
+        }
+
+        // 获得当前方向的target
+        public int GetDestWorldPosDirect(Vector3 worldPos) {
+            var orgVec = this.transform.position;
+            float deltaX = worldPos.x - orgVec.x;
+            float deltaY = worldPos.y - orgVec.y;
+            if (deltaX < -float.Epsilon && deltaY >= 0) {
+                if (deltaY <= 0.001f)
+                    return 6;
+                if (deltaX >= -0.001f)
+                    return 0;
+                return 7;
+            } else if (deltaX > float.Epsilon && deltaY >= 0) {
+                if (deltaY <= 0.001f)
+                    return 2;
+                if (deltaX <= 0.001f)
+                    return 0;
+                return 1;
+            } else if (deltaX < -float.Epsilon && deltaY < 0) {
+                if (deltaY >= -0.001f)
+                    return 6;
+                if (deltaX >= -0.001f)
+                    return 4;
+                return 5;
+            } else if (deltaX > float.Epsilon && deltaY < 0) {
+                if (deltaY >= -0.001f)
+                    return 2;
+                if (deltaX <= 0.001f)
+                    return 4;
+                return 3;
+            }
+
+            return m_Dir;
+        }
+
+        public void ChangeAction(FighterActionEnum action) {
+            ChangeAction(action, m_Dir);
+        }
+
+        public float TickDetla {
+            get {
+                return ((float)SpriteA2D._cSpriteAnimateDeltaTick) * m_Speed;
+            }
         }
 
         private void Update() {

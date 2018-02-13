@@ -7,12 +7,11 @@ using RoundBattle.Command;
 
 namespace RoundBattle.Test {
 
-    [RequireComponent(typeof(BattleSystem))]
     public class BattleSystemTest : MonoBehaviour {
         private BattleSystem m_Sys = null;
 
         private void Start() {
-            m_Sys = GetComponent<BattleSystem>();
+            m_Sys = BattleSystem.Instance;
             Init();
         }
 

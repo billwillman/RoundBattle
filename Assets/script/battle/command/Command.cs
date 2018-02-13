@@ -23,9 +23,11 @@ namespace RoundBattle.Command {
         }
         public virtual void Enter(Fighter target) { }
         public virtual void Exit(Fighter target) { }
-        public virtual void Process(Fighter target) 
+        public virtual void Update(Fighter target) { }
+        public void Process(Fighter target) 
         {
             OnCheckActionFrame(target);
+            Update(target);
         }
 
         public IFighterStateListener Listener {
@@ -47,30 +49,32 @@ namespace RoundBattle.Command {
         }
 
         private void OnCheckActionFrame(Fighter target) {
-            if (target == null)
+            if (target == null || target.FighterStateData == null || target.FighterStateData.ActionData == null)
                 return;
             FighterActionEnum currentAction = target.CurrentAction;
             bool isVaildAction = currentAction != FighterActionEnum.None;
             if (isVaildAction) {
-                if (currentAction != m_LastAction) {
-                    m_LastKeyFrame = -1;
+                var lastAction = target.FighterStateData.ActionData.LastAction;
+                var lastKeyFrame = target.FighterStateData.ActionData.LastKeyFrame;
+                if (currentAction != lastAction) {
+                    lastKeyFrame = -1;
                     OnActionChanged(currentAction, target);
                     if (Listener != null)
-                        Listener.OnActionChanged(m_LastAction, target);
-                    m_LastAction = currentAction;
+                        Listener.OnActionChanged(lastAction, target);
+                    lastAction = currentAction;
                 }
 
                 int currentFrame = target.CurrentFrameIndex;
-                if (currentFrame >= 0 && m_LastKeyFrame != currentFrame) {
-                    OnKeyFrameChanged(m_LastKeyFrame, target);
+                if (currentFrame >= 0 && lastKeyFrame != currentFrame) {
+                    OnKeyFrameChanged(lastKeyFrame, target);
                     if (Listener != null)
-                        Listener.OnKeyFrameChanged(m_LastKeyFrame, target);
-                    m_LastKeyFrame = currentFrame;
+                        Listener.OnKeyFrameChanged(lastKeyFrame, target);
+                    lastKeyFrame = currentFrame;
                 }
+
+                target.FighterStateData.ActionData.LastAction = lastAction;
+                target.FighterStateData.ActionData.LastKeyFrame = lastKeyFrame;
             }
         }
-
-        private int m_LastKeyFrame = -1;
-        private FighterActionEnum m_LastAction = FighterActionEnum.None;
     }
 }
