@@ -54,6 +54,15 @@ namespace RoundBattle {
             }
         }
 
+        public int CurrentFrameCount {
+            get {
+                SpriteA2D body = GetPartSpriteA2D(FigherPart.Body);
+                if (body == null)
+                    return -1;
+                return body.FrameCount;
+            }
+        }
+
         // 状态机
         public FighterStateMgr StateMgr {
             get {

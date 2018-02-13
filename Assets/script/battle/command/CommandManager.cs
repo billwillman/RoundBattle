@@ -23,6 +23,7 @@ namespace RoundBattle.Command {
 
         private static void RegisterFighterStates() {
             Register(FighterStates.Fighter_PhysicalAttackMove, new Fighter_PhysicalAttackMoveState());
+            Register(FighterStates.Fighter_Climb, new Fighter_ClimbState());
         }
     }
 }

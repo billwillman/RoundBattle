@@ -201,13 +201,13 @@ namespace RoundBattle.Test {
                 seat.seat = SeatType.right;
                 for (int i = 0; i < SeatManager._cSeatCount; ++i) {
                     seat.pos = i;
-                    BattleSystem.GetInstance().SeatMgr.ChangeAction(seat, m_TestAction, true);
+                    BattleSystem.GetInstance().SeatMgr.ChangeAction(seat, m_TestAction);
                 }
 
                 seat.seat = SeatType.left;
                 for (int i = 0; i < SeatManager._cSeatCount; ++i) {
                     seat.pos = i;
-                    BattleSystem.GetInstance().SeatMgr.ChangeAction(seat, m_TestAction, true);
+                    BattleSystem.GetInstance().SeatMgr.ChangeAction(seat, m_TestAction);
                 }
             }
         }

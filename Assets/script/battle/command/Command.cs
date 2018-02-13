@@ -11,6 +11,8 @@ namespace RoundBattle.Command {
     public interface IFighterStateListener {
         void OnActionChanged(FighterActionEnum lastAction, Fighter fighter);
         void OnKeyFrameChanged(int lastFrame, Fighter fighter);
+        // 最后一帧播放完毕
+        void OnEndKeyFrameEnd(Fighter fighter);
     }
 
     // 角色基础状态
@@ -48,6 +50,11 @@ namespace RoundBattle.Command {
 
         }
 
+        // 最后一帧播放完毕
+        protected virtual void OnEndKeyFrameEnd(Fighter fighter) {
+
+        }
+
         private void OnCheckActionFrame(Fighter target) {
             if (target == null || target.FighterStateData == null || target.FighterStateData.ActionData == null)
                 return;
@@ -65,11 +72,16 @@ namespace RoundBattle.Command {
                 }
 
                 int currentFrame = target.CurrentFrameIndex;
-                if (currentFrame >= 0 && lastKeyFrame != currentFrame) {
+                int currentFrameCount = target.CurrentFrameCount;
+                if (currentFrame >= 0 && currentFrameCount > 0 && lastKeyFrame != currentFrame) {
                     OnKeyFrameChanged(lastKeyFrame, target);
                     if (Listener != null)
                         Listener.OnKeyFrameChanged(lastKeyFrame, target);
                     lastKeyFrame = currentFrame;
+                } else if (currentFrame >= 0 && currentFrame == currentFrameCount - 1 && lastKeyFrame == currentFrame) {
+                    OnEndKeyFrameEnd(target);
+                    if (Listener != null)
+                        Listener.OnEndKeyFrameEnd(target);
                 }
 
                 target.FighterStateData.ActionData.LastAction = lastAction;
