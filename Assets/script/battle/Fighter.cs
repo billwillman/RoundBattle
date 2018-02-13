@@ -264,6 +264,7 @@ namespace RoundBattle {
             // 后续考虑异步
             Sprite[] sps = LoadPartSprites(part, action, name);
             sprite.Init(sps, m_FrameType, m_AniInfo, m_LoopDir, m_LoopCount, m_Dir);
+            sprite.AttachSpriteRenderer ();
         }
 
         private SpriteA2D CreatePart(FighterActionEnum action, FigherPart part, string name = "") {
@@ -365,7 +366,7 @@ namespace RoundBattle {
 
         public static bool IsPosEnd(Vector3 destOrgDir, Vector3 dest, Vector3 current) {
             Vector3 curretDir = dest - current;
-            float v = destOrgDir.x * current.x + destOrgDir.y * current.y;
+            float v = destOrgDir.x * curretDir.x + destOrgDir.y * curretDir.y;
             if (v <= float.Epsilon)
                 return true;
             return false;
@@ -425,6 +426,9 @@ namespace RoundBattle {
                 }
             }
             iter.Dispose();
+
+            if (m_StateMgr != null)
+                m_StateMgr.Process (this);
         }
 
     }

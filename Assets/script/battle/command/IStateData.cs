@@ -72,4 +72,23 @@ namespace RoundBattle.Command {
             set;
         }
     }
+
+    // 默认数据类型
+    internal class DefaultFighterStateData: IFighterStateData
+    {
+        public Fighter_PhsyicalAttackMoveData PhysicalAttackMoveData {
+            get;
+            set;
+        }
+
+        public Fighter_ActionData ActionData {
+            get;
+            set;
+        }
+
+        public DefaultFighterStateData()
+        {
+            ActionData = new Fighter_ActionData ();
+        }
+    }
 }

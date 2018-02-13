@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 
 namespace RoundBattle.Command {
-    class Fighter_IdleState {
+    public class Fighter_IdleState: FighterBaseState {
+        public override void Enter(Fighter target)
+        {
+            target.ChangeAction (FighterActionEnum.Idle);
+        }
     }
 }

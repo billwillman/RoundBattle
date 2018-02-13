@@ -12,11 +12,11 @@ namespace RoundBattle.Command {
         }
 
         protected override void OnEndKeyFrameEnd(Fighter fighter) {
-            DoNextState();
+            DoNextState(fighter);
         }
 
-        private void DoNextState() {
-            
+        private void DoNextState(Fighter fighter) {
+            fighter.StateMgr.ChangeState (FighterStates.Fighter_Idle);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using RoundBattle.Record;
+using RoundBattle.Command;
 
 namespace RoundBattle {
 
@@ -212,6 +213,16 @@ namespace RoundBattle {
                 Fighter fighter = m_RightSeats[i];
                 DestroyFighter(fighter);
             }
+        }
+
+        public bool ChangeState(SeatInfo clientSeatInfo, FighterStates state)
+        {
+            if (!clientSeatInfo.IsVaild)
+                return false;
+            Fighter fighter = GetFighter(clientSeatInfo);
+            if (fighter == null)
+                return false;
+            return fighter.StateMgr.ChangeState (state);
         }
 
         public bool ChangeAction(SeatInfo clientSeatInfo, FighterActionEnum action, int dir, bool isReset = false) {

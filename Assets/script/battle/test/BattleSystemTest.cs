@@ -190,7 +190,7 @@ namespace RoundBattle.Test {
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.A)) {
-
+                /*
                 if ((int)m_TestAction + 1 >= (int)FighterActionEnum.Max) {
                     m_TestAction = FighterActionEnum.None + 1;
                 } else
@@ -208,7 +208,12 @@ namespace RoundBattle.Test {
                 for (int i = 0; i < SeatManager._cSeatCount; ++i) {
                     seat.pos = i;
                     BattleSystem.GetInstance().SeatMgr.ChangeAction(seat, m_TestAction);
-                }
+                }*/
+                SeatInfo seat = new SeatInfo();
+
+                seat.seat = SeatType.right;
+                seat.pos = 5;
+                BattleSystem.GetInstance ().SeatMgr.ChangeState (seat, FighterStates.Fighter_Climb);
             }
         }
     }

@@ -56,8 +56,15 @@ namespace RoundBattle.Command {
         }
 
         private void OnCheckActionFrame(Fighter target) {
-            if (target == null || target.FighterStateData == null || target.FighterStateData.ActionData == null)
+            if (target == null)
                 return;
+
+            if (target.FighterStateData == null)
+                target.FighterStateData = new DefaultFighterStateData ();
+
+            if (target.FighterStateData.ActionData == null)
+                return;
+
             FighterActionEnum currentAction = target.CurrentAction;
             bool isVaildAction = currentAction != FighterActionEnum.None;
             if (isVaildAction) {
