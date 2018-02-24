@@ -6,12 +6,15 @@ using Utils;
 namespace RoundBattle.Command {
     // 命令管理器
     public class CommandManager {
-
-        private LinkedList<Command> m_CmdList = new LinkedList<Command>();
+        // 等待命令队列
+        private LinkedList<Command> m_WaitCmdList = new LinkedList<Command>();
+        // 运行队列
+        private LinkedList<Command> m_RunCmdList = new LinkedList<Command>();
 
         // 清理
         public void Clear() {
-            m_CmdList.Clear();
+            m_WaitCmdList.Clear();
+            m_RunCmdList.Clear ();
         }
     }
 
@@ -25,6 +28,8 @@ namespace RoundBattle.Command {
             Register(FighterStates.Fighter_PhysicalAttackMove, new Fighter_PhysicalAttackMoveState());
             Register(FighterStates.Fighter_Climb, new Fighter_ClimbState());
             Register (FighterStates.Fighter_Idle, new Fighter_IdleState ());
+            Register (FighterStates.Fighter_StartFight, new Fighter_StartFightMove ());
+            Register (FighterStates.Fighter_Ready, new Fighter_ReadyState ());
         }
     }
 }

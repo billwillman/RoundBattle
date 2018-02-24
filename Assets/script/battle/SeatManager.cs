@@ -143,6 +143,40 @@ namespace RoundBattle {
             return AddFighter(fighter);
         }
 
+        // 获得跑入场景的世界坐标位置
+
+        public Vector3 GetSeatStartFightWorldPosition(SeatInfo clientInfo)
+        {
+            Vector3 standPos = GetSeatStandWorldPosition(clientInfo);
+            if (standPos == _cInvaildPos)
+                return standPos;
+            switch (clientInfo.seat) {
+            case SeatType.right:
+                standPos += new Vector3 (3f, -3f, 0f);
+                break;
+            case SeatType.left:
+                standPos += new Vector3 (-3f, 3f, 0f);
+                break;
+            }
+            return standPos;
+        }
+
+        public Vector3 GetSeatStartFightWorldPosition(int serverId)
+        {
+            var seatInfo = GetClientSeatInfo(serverId);
+            if (!seatInfo.IsVaild)
+                return _cInvaildPos;
+            return GetSeatStartFightWorldPosition (seatInfo);
+        }
+
+        public Vector3 GetSeatStandWorldPosition(int serverId)
+        {
+            var seatInfo = GetClientSeatInfo(serverId);
+            if (!seatInfo.IsVaild)
+                return _cInvaildPos;
+            return GetSeatStandWorldPosition (seatInfo);
+        }
+
         // 获得站立位置
         public Vector3 GetSeatStandWorldPosition(SeatInfo clientInfo) {
             if (!clientInfo.IsVaild)

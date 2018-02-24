@@ -33,6 +33,8 @@ namespace RoundBattle {
         private int m_ServerId = -1;
         // 非战斗中无此数据
         private IFighterStateData m_FighterStateData;
+        // 角色身上特效管理
+        private ActorEffectManager m_EffMgr = null;
 
         private void Awake() {
             m_AniInfo = SpriteA2D.GeneratorDefaultAniInfo();

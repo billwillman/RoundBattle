@@ -5,7 +5,44 @@ using System.Text;
 using Utils;
 
 namespace RoundBattle.Command {
-    public class Command {
+
+    // 命令状态
+    internal enum CommandStatus
+    {
+        // 等待执行
+        Wait = 0,
+        // 执行中
+        Run,
+        // 执行完毕
+        Done
+    }
+
+    // 命令基类
+    internal abstract class Command {
+        private CommandStatus m_Status = CommandStatus.Wait;
+
+        // 是否可运行
+        public virtual bool CanRun()
+        {
+            return true;
+        }
+
+        public virtual void StartRun()
+        {}
+
+        public virtual void Runing()
+        {}
+
+        public virtual void EndRun()
+        {}
+
+        public CommandStatus Status
+        {
+            get
+            {
+                return m_Status;
+            }
+        }
     }
 
     public interface IFighterStateListener {

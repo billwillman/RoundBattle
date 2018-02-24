@@ -17,8 +17,6 @@ namespace RoundBattle.Command {
             return IsVaild(target);
         }
         public override void Enter(Fighter target) {
-            if (!IsVaild(target))
-                return;
             // 切换动作
             var data = target.FighterStateData.PhysicalAttackMoveData;
             SeatInfo targetSeat = data.Target;

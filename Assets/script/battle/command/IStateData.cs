@@ -56,6 +56,19 @@ namespace RoundBattle.Command {
         }
     }
 
+    internal class Fighter_StartFighterData
+    {
+        public float MoveSpeed {
+            get;
+            private set;
+        }
+
+        public Fighter_StartFighterData(float moveSpeed)
+        {
+            this.MoveSpeed = moveSpeed;
+        }
+    }
+
     /*---------------------------------------------------------------------------------------------*/
 
     // 数据层
@@ -67,6 +80,13 @@ namespace RoundBattle.Command {
             set;
         }
 
+        Fighter_StartFighterData StartFighterData {
+            get;
+            set;
+        }
+
+        //----
+
         Fighter_ActionData ActionData {
             get;
             set;
@@ -77,6 +97,11 @@ namespace RoundBattle.Command {
     internal class DefaultFighterStateData: IFighterStateData
     {
         public Fighter_PhsyicalAttackMoveData PhysicalAttackMoveData {
+            get;
+            set;
+        }
+
+        public Fighter_StartFighterData StartFighterData {
             get;
             set;
         }

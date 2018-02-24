@@ -7,6 +7,7 @@ namespace RoundBattle.Command {
     public enum FighterStates {
         // 准备状态
         Fighter_Ready = 0,
+        Fighter_StartFight,
         Fighter_Idle,
         // 从地上爬出来
         Fighter_Climb,

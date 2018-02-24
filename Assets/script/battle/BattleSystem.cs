@@ -13,6 +13,13 @@ namespace RoundBattle {
         private CommandManager m_CommandMgr = new CommandManager();
         private static BattleSystem m_Instance = null;
 
+        public CommandManager CmdMgr
+        {
+            get {
+                return m_CommandMgr;
+            }
+        }
+
         public static Transform FightersRoot {
             get;
             private set;
